@@ -13,7 +13,7 @@ def load_repositories_from_file(path: str) -> List[Dict]:
         repos = []
         reader = csv.DictReader(content, delimiter='\t')
         for row in reader:
-            if REPO_COLUMN not in row:
+            if REPO_COLUMN not in row or not row[REPO_COLUMN]:
                 continue
             # Convert https://github.com/user/repo to user/repo format
             repo_url = row[REPO_COLUMN]
