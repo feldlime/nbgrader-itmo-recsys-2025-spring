@@ -15,6 +15,9 @@ services:
       - app-network
     volumes:
       - ./nginx/ssl:/etc/nginx/ssl:ro
+      # Mount Nginx config (for debug)
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped
 
   oauth2-proxy:
     build:
@@ -28,7 +31,11 @@ services:
       - OAUTH2_PROXY_GITHUB_USERS
     networks:
       - app-network
-
+    volumes:
+      # Mount config (for debug)
+      - ./oauth2-proxy/oauth2-proxy.cfg:/etc/oauth2-proxy/oauth2-proxy.cfg
+    restart: unless-stopped
+ 
   puller:
     build:
       context: ./puller
@@ -62,7 +69,9 @@ services:
     volumes:
       - ./nbgrader/app:/app
       - ./exchange:/usr/local/share/nbgrader/exchange
-    command: "cd scripts && python add_students.py"
+    command: "python scripts/add_students.py"
+    networks:
+      - app-network
     
 networks:
   app-network:
