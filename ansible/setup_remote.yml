@@ -1,0 +1,103 @@
+---
+- name: Setup Ubuntu Remote Machine
+  hosts: remote
+  become: yes  # Run as sudo
+  tasks:
+
+    - name: Update package list and upgrade packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install required packages
+      apt:
+        name:
+          - git
+          - curl
+          - wget
+          - htop
+          - ca-certificates
+          - gnupg
+          - lsb-release
+        state: present
+
+
+    # AFTER CLONING THE REPO
+    - name: Copy .env
+      copy:
+        src: "../.env"
+        dest: "/home/feldlime/nbgrader-itmo-recsys-2025-spring/.env"
+
+    - name: Copy SSL certs
+      copy:
+        src: "{{ item }}"
+        dest: "/home/feldlime/nbgrader-itmo-recsys-2025-spring/nginx/ssl/"
+      loop:
+       - "../nginx/ssl/nginx.crt"
+       - "../nginx/ssl/nginx.key"
+      
+
+    # - name: Install docker
+    #   shell: /home/feldlime/install_docker.sh
+
+    # - name: Add docker sources
+    #   shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+# echo \
+#     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+#     $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    # - name: Update package list
+    #   apt:
+    #     update_cache: yes
+          
+    # - name: Install docker
+    #   apt:
+    #     name:
+    #       - docker-ce
+    #       - docker-ce-cli
+    #       - containerd.io
+    #       - docker-buildx-plugin
+    #       - docker-compose-plugin
+    #     state: present
+
+    # - name: Add user to Docker group
+    #   user:
+    #     name: "{{ ansible_user }}"
+    #     groups: docker
+    #     append: yes
+
+    # - name: Ensure Docker service is enabled and running
+    #   systemd:
+    #     name: docker
+    #     enabled: yes
+    #     state: started
+
+
+    # - name: Install Just
+    #   shell: |
+    #     curl -fsSL https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+    #   args:
+    #     creates: /usr/local/bin/just
+
+    # - name: Ensure SSH config directory exists
+    #   file:
+    #     path: "/home/{{ ansible_user }}/.ssh"
+    #     state: directory
+    #     mode: '0700'
+
+    # - name: Configure SSH to use the correct key for GitHub
+    #   lineinfile:
+    #     path: "/home/{{ ansible_user }}/.ssh/config"
+    #     line: |
+    #       Host github.com
+    #         ForwardAgent yes
+    #     create: yes
+    #     mode: '0600'
+
+    # - name: Clone repository
+    #   git:
+    #     repo: "git@github.com:feldlime/nbgrader-itmo-recsys-2025-spring.git"
+    #     dest: "/home/{{ ansible_user }}/nbgrader-itmo-recsys-2025-spring"
+    #     version: main
+    #     accept_hostkey: yes
+

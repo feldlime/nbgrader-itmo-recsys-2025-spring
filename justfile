@@ -78,3 +78,5 @@ dev-down:
 
 # ############################################################
 
+run-ansible:
+    ansible-playbook -i ansible/inventory.ini ansible/setup_remote.yml -vv  # --start-at-task="Copy .env"
