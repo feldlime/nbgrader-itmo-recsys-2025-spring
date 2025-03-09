@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    depends_on:
+      - puller
+      - oauth2-proxy
+      - nbgrader
+    networks:
+      - app-network
+    volumes:
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+
+  oauth2-proxy:
+    build:
+      context: ./oauth2-proxy
+    env_file:
+      - .env
+    environment:
+      - OAUTH2_PROXY_COOKIE_SECRET
+      - OAUTH2_PROXY_CLIENT_ID
+      - OAUTH2_PROXY_CLIENT_SECRET
+      - OAUTH2_PROXY_GITHUB_USERS
+    networks:
+      - app-network
+
+  puller:
+    build:
+      context: ./puller
+    volumes:
+      - ./puller:/app
+      - ./exchange:/exchange:rw
+    env_file:
+      - .env
+    environment:
+      - GITHUB_TOKEN
+      - TARGET_DIR
+      - REPOSITORIES_CSV_PATH
+      - JUPYTER_URL
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  nbgrader:
+    build:
+      context: ./nbgrader
+    volumes:
+      - ./nbgrader/app:/app
+      - ./exchange:/usr/local/share/nbgrader/exchange
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  nbgrader_add_students:
+    build:
+      context: ./nbgrader
+    volumes:
+      - ./nbgrader/app:/app
+      - ./exchange:/usr/local/share/nbgrader/exchange
+    command: "cd scripts && python add_students.py"
+    
+networks:
+  app-network:
+    driver: bridge
