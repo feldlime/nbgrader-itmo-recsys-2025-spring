@@ -83,18 +83,17 @@ settings.json
 .vscode/
 .vs/
 
-# Pytorch-lightning
-lightning_logs
-
-# benchmarks
-benchmark_results/
 
 # Data
 *.zip
 *.csv
 *.dat
+*.tsv
 
 
 .Trash-*/
 *.db
 migrated
+
+exchange/
+!exchange/**/.gitkeep
