@@ -97,3 +97,6 @@ migrated
 
 exchange/
 !exchange/**/.gitkeep
+
+*.crt
+*.key
