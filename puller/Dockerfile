@@ -30,6 +30,7 @@ RUN groupadd --force --gid "${GID}" --non-unique "${GROUP}" \
     && adduser --uid "${UID}" --gid "${GID}" --disabled-password --gecos "" "${USER}" \
     && chown -R ${USER} /app
 
+USER ${USER}
 
 # ############################################################
 
