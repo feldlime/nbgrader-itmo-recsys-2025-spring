@@ -90,13 +90,16 @@ settings.json
 *.dat
 *.tsv
 
+*.crt
+*.key
 
 .Trash-*/
 *.db
 migrated
 
-exchange/
-!exchange/**/.gitkeep
+exchange/**/*.ipynb
+exchange/**/*.py
 
-*.crt
-*.key
+nbgrader/app/autograded
+nbgrader/app/release
+nbgrader/app/submitted
