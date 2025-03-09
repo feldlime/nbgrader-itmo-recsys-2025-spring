@@ -1,3 +1,4 @@
+import base64
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional, Dict
@@ -5,7 +6,6 @@ import os
 import shutil
 
 from github import Github
-from github.Repository import Repository
 from github.ContentFile import ContentFile
 from github.Auth import Token
 
@@ -46,11 +46,19 @@ class GitHubClient:
                 now_dt = datetime.now(tz=timezone.utc)
                 target_folder_name = f"{username}+{homework_name}+{now_dt:%Y-%m-%dT%H:%M:%S} UTC+00"
                 target_path = Path(target_dir) / target_folder_name
-                target_path.mkdir(exist_ok=True)
+                target_path.mkdir(exist_ok=True, parents=True)
                 
             for content in contents:
+                print(f"{content.name=}", flush=True)
+                print(f"{content.size=}", flush=True)
                 target_file_path = target_path / content.name
-                target_file_path.write_text(content.content)
+                
+                blob = repo.get_git_blob(content.sha)
+                print(f"Blob is loaded, {blob.encoding=}")
+                blob_content = blob.content
+                if blob.encoding == "base64":
+                    blob_content = base64.b64decode(blob_content).decode("utf-8")
+                target_file_path.write_text(blob_content)
             
             status = {
                 'success': True,

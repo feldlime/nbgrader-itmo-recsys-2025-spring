@@ -61,7 +61,7 @@ with jupyter_col1:
     
 with jupyter_col2:
     st.markdown(
-        f'<a href="{settings.jupyter_url}" target="_blank" class="jupyter-link">' 
+        f'<a href="{settings.jupyter_url}" class="jupyter-link">' 
         '<img src="https://jupyter.org/assets/homepage/main-logo.svg" ' 
         'alt="Jupyter Logo"></a>', 
         unsafe_allow_html=True
