@@ -30,7 +30,8 @@ def main() -> None:
     print(f"New students to add: {len(students_to_add_df)}")
     
     for _, student in students_to_add_df.iterrows():
-        gradebook.add_student(student.id, first_name=student["first_name"], last_name=student["last_name"])
+        print(student, flush=True)
+        gradebook.add_student(student["student_id"], first_name=student["first_name"], last_name=student["last_name"])
 
     print(f"New students adding finished")
 
