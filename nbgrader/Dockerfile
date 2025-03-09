@@ -38,4 +38,4 @@ ENV JUPYTER_CONFIG_DIR=/app
 EXPOSE 9999
 
 # Default command to start Jupyter
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=9999", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.base_url=/app"]
+CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=9999", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.allow_origin='*'", "--NotebookApp.trust_xheaders=True", "--NotebookApp.base_url=/jupyter/", "--NotebookApp.allow_remote_access=True"]
