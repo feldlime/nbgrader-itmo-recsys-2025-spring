@@ -16,7 +16,7 @@ def load_repositories_from_file(path: str) -> List[Dict]:
             if REPO_COLUMN not in row or not row[REPO_COLUMN]:
                 continue
             # Convert https://github.com/user/repo to user/repo format
-            repo_url = row[REPO_COLUMN]
+            repo_url = row[REPO_COLUMN].strip()
             repo = repo_url.removeprefix('https://github.com/')
             repos.append({'repository': repo})
         return repos
