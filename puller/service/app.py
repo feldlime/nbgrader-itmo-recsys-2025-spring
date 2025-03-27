@@ -73,23 +73,19 @@ col1, col2 = st.columns(2)
 with col1:
     homework_name = st.text_input(
         "Homework Name",
-        value="hw_2",
+        value="",
         placeholder="e.g., 'hw_2'",
         help="This will be used as the branch name and folder name"
     )
 
 with col2:
-    repos_file = st.file_uploader(
-        "Upload Repositories TSV",
-        type=["tsv"],
-        help=f"TSV file with '{REPO_COLUMN}' column containing GitHub repositories (e.g., 'https://github.com/username/repo')"
-    )
+    students_ids_text = st.text_area("Student ids to pull").strip()
 
 # Load repositories either from uploaded file or default path
 repos = []
-repos_file = repos_file or settings.students_tsv_path
+repos_file = settings.students_tsv_path
+
 repos = load_repositories_from_file(settings.students_tsv_path)
-st.info(f"Using repositories from {settings.students_tsv_path}")
 
 # Display repository count and Pull All button
 st.write("---")
@@ -99,14 +95,20 @@ if repos:
     # Large, centered Pull All button
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("📥 PULL ALL REPOSITORIES", 
-                    disabled=not homework_name,
+        if st.button("📥 PULL REPOSITORIES", 
+                    disabled=not homework_name or not students_ids_text,
                     use_container_width=True,
                     type="primary"):
             if not homework_name:
                 st.warning("Please enter a homework name")
+            if not students_ids_text:
+                st.warning("Please enter student ids")
             else:
                 # Create placeholders for progress and status
+                
+                student_ids = {s.strip() for s in students_ids_text.split("\n")}
+                repos = [r for r in repos if r["repository"].split("/")[0] in student_ids]
+                
                 progress_bar = st.progress(0)
                 status_text = st.empty()
                 results = {}
