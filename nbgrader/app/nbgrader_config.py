@@ -10,6 +10,10 @@ c.CollectApp.check_owner = False
 # server set up.
 c.CourseDirectory.course_id = "itmo_recsys_2025_spring"
 
+c.ExecutePreprocessor.environment = {
+    'DATA_PATH_1': '/path/to/data'
+}
+
 # c.IncludeHeaderFooter.header = "source/header.ipynb"
 
 ###############################################################################
