@@ -8,7 +8,8 @@ c.CollectApp.check_owner = False
 
 # You only need this if you are running nbgrader on a shared
 # server set up.
-c.CourseDirectory.course_id = "itmo_recsys_2025_spring"
+c.CourseDirectory.course_id = "iteration_4"
+c.ExecutePreprocessor.kernel_name = 'python3'
 
 # c.IncludeHeaderFooter.header = "source/header.ipynb"
 
@@ -1001,7 +1002,7 @@ c.ClearSolutions.code_stub = {'python': '# YOUR CODE HERE\nraise NotImplementedE
 
 ## 
 #  See also: NotebookClient.timeout
-c.ExecutePreprocessor.timeout = 60  # TODO: increase!
+c.ExecutePreprocessor.timeout = 1200
 
 ## 
 #  See also: NotebookClient.timeout_func

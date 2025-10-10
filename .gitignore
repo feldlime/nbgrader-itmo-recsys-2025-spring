@@ -104,3 +104,5 @@ nbgrader/app/autograded
 nbgrader/app/release
 nbgrader/app/submitted
 nbgrader/app/feedback
+
+iteration_*
